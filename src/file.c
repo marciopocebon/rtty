@@ -144,7 +144,7 @@ static void start_download_file(struct file_context *ctx, struct buffer *info, i
     ment = find_mount_point(abspath);
     if (ment) {
         if (statvfs(ment->mnt_dir, &sfs) == 0 && ctx->total_size > sfs.f_bavail * sfs.f_frsize) {
-            int type = RTTY_FILE_MSG_NO_SPACE;
+            uint8_t type = RTTY_FILE_MSG_NO_SPACE;
 
             send_canceled_msg(rtty);
             sendto(ctx->sock, &type, 1, 0, (struct sockaddr *) &ctx->peer_sun, sizeof(struct sockaddr_un));
@@ -392,7 +392,7 @@ done:
 
 void cancel_file_operation(struct ev_loop *loop, int sock)
 {
-    int type = RTTY_FILE_MSG_CANCELED;
+    uint8_t type = RTTY_FILE_MSG_CANCELED;
     send(sock, &type, 1, 0);;
     ev_break(loop, EVBREAK_ALL);
     puts("");
